@@ -83,22 +83,6 @@
     max-width:480px; margin: 18px auto 0; font-size:15.5px; line-height:1.75; color: var(--ink-soft);
   }
 
-  /* countdown */
-  #countdown{
-    display:flex; justify-content:center; gap:22px;
-    margin: 30px auto 0;
-    flex-wrap: wrap;
-  }
-  #countdown .unit{
-    min-width:64px;
-  }
-  #countdown .num{
-    font-family:'Cormorant Garamond', serif; font-size: 34px; font-weight:600; color: var(--ink);
-  }
-  #countdown .lab{
-    font-size:10px; letter-spacing:.15em; text-transform:uppercase; color: var(--ink-soft); margin-top:2px;
-  }
-
   .divider{
     display:flex; justify-content:center; align-items:center; gap:10px;
     padding: 30px 0 10px; color: var(--gold);
@@ -274,8 +258,6 @@
     <div class="eyebrow">We said yes</div>
     <h1 class="names">Arsh<span class="amp">&amp;</span>Sanjul</h1>
     <p class="tagline">We're celebrating our engagement and we want to see it through your eyes. Add your photos and leave us a note below.</p>
-
-    <div id="countdown" aria-live="polite"></div>
   </div>
 </header>
 
@@ -298,7 +280,7 @@
 
       <label class="field">Photos</label>
       <div class="drop" id="drop-zone">
-        <input type="file" id="file-input" accept="image/*" multiple capture="environment" />
+        <input type="file" id="file-input" accept="image/*" multiple />
         <div class="drop-label"><strong>Tap to choose photos</strong><br>or drag them here</div>
         <div id="preview-strip"></div>
       </div>
@@ -394,28 +376,10 @@ const firebaseConfig = {
   appId: "YOUR_APP_ID"
 };
 
-/* Set your engagement date/time here (used for the countdown) */
-const EVENT_DATE = new Date("2026-12-12T18:00:00");
 
 firebase.initializeApp(firebaseConfig);
 const storage = firebase.storage();
 const db = firebase.firestore();
-
-/* ---------------- Countdown ---------------- */
-function renderCountdown(){
-  const el = document.getElementById('countdown');
-  const diff = EVENT_DATE - new Date();
-  if (diff <= 0){ el.innerHTML = `<div class="unit"><div class="num">💍</div><div class="lab">It's the day</div></div>`; return; }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  el.innerHTML = [
-    [d,'Days'],[h,'Hours'],[m,'Min'],[s,'Sec']
-  ].map(([v,l]) => `<div class="unit"><div class="num">${v}</div><div class="lab">${l}</div></div>`).join('');
-}
-renderCountdown();
-setInterval(renderCountdown, 1000);
 
 /* ---------------- Tabs ---------------- */
 const tabPhoto = document.getElementById('tab-photo');
